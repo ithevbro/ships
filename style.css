@@ -1,0 +1,33 @@
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-size: 30px;
+    text-align: center;
+}
+
+tr {
+    border: 1px solid black;
+}
+
+td {
+    border: 1px solid black;
+    width: 40px;
+    height: 40px;
+}
+
+.player-1 {
+    display: flex;
+    gap: 15px;
+}
+
+.player-2 {
+    display: flex;
+    gap: 15px;
+}
+
+body {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+}
