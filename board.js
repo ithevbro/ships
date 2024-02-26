@@ -1,6 +1,6 @@
 function getBords(table1, table2) {
-    let table = table1
     'use strict'
+    let table = table1
     let coords = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -14,13 +14,14 @@ function getBords(table1, table2) {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
+    let shipsLocation = []
+
     function createTable(tableName) {
         for (let i = 1; i <= 10; i++) {
             let tr = document.createElement('tr')
             tableName.append(tr)
             for (let j = 1; j <= 10; j++) {
                 let td = document.createElement('td')
-                td.textContent = '-'
                 tr.append(td)
             }
         }
@@ -64,7 +65,8 @@ function getBords(table1, table2) {
             for (let i = 0; i < size + 1; i++) {
                 if (i < size) {
                     table.rows[row + i].cells[cell].style.backgroundColor = 'red'
-                    table.rows[row + i].cells[cell].textContent = 'S'
+                    table.rows[row + i].cells[cell].textContent = `${row + i}-${cell}`
+                    table.rows[row + i].cells[cell].setAttribute('data-ship', position);
                     coords[row + i][cell] = 1
                 }
                 else {
@@ -92,7 +94,8 @@ function getBords(table1, table2) {
             for (let i = 0; i < size + 1; i++) {
                 if (i < size) {
                     table.rows[row].cells[cell + i].style.backgroundColor = 'red'
-                    table.rows[row].cells[cell + i].textContent = 'S'
+                    table.rows[row].cells[cell + i].textContent = `${row}-${cell + i}`
+                    table.rows[row].cells[cell + i].setAttribute('data-ship', position);
                     coords[row][cell + i] = 1
                 }
                 else {
@@ -122,14 +125,15 @@ function getBords(table1, table2) {
     }
 
     // console.log(coords);
-    function checkAvailableCells(row, cell, position, size) {
+    function checkAvailableCells(row, cell, position, size, id) {
         let memory = []
         if (position) {
-            for (let i = cell; i < coords[0].length; i++) {
-                for (let j = row; j < coords.length; j++) {
+            for (let i = cell; i < 10; i++) {
+                for (let j = row; j < 10; j++) {
                     if (coords[j][i] < 1) {
-                        memory.push(j, i)
-                        if (memory.length == size + size) {
+                        memory.push(`${j}-${i}`)
+                        if (memory.length == size) {
+                            shipsLocation.push(memory)
                             return true
                         }
                     }
@@ -140,11 +144,12 @@ function getBords(table1, table2) {
             }
         }
         else {
-            for (let i = row; i < coords.length; i++) {
-                for (let j = cell; j < coords.length; j++) {
+            for (let i = row; i < 10; i++) {
+                for (let j = cell; j < 10; j++) {
                     if (coords[i][j] < 1) {
-                        memory.push(i, j)
-                        if (memory.length == size + size) {
+                        memory.push(`${i}-${j}`)
+                        if (memory.length == size) {
+                            shipsLocation.push(memory)
                             return true
                         }
                     }
@@ -156,7 +161,10 @@ function getBords(table1, table2) {
         }
     }
 
-    return coords
+    return {
+        coords,
+        shipsLocation
+    }
 }
 
 export default getBords
