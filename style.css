@@ -10,6 +10,7 @@ td {
     height: 40px;
     position: relative;
     color: transparent;
+    user-select: none;
 }
 
 .player-1 {
@@ -29,37 +30,16 @@ body {
     align-items: center;
 }
 
-/* .targets::after {
-    position: absolute;
-    content: '';
-    width: 40px;
-    height: 40px;
-    background-color: rgba(143, 17, 17, 0.2);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.target::after {
-    position: absolute;
-    content: '';
-    width: 40px;
-    height: 40px;
-    background-color: rgba(143, 17, 17, 0.5);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
-
 .kill::before,
 .kill::after {
     position: absolute;
     content: '';
     width: 130%;
     height: 5px;
-    background-color: black;
+    background-color: rgb(190, 6, 6);
     left: -15%;
-    border-radius: 15px;
+    border-radius: 25px;
+    top: 45%;
 }
 
 .kill::before {

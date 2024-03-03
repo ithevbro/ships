@@ -6,6 +6,7 @@ let t = document.getElementById('table2-p1')
 let t1 = document.getElementById('table1-p1')
 let coords = p1.coords
 let shipsLocation = p1.shipsLocation
+console.log(p1);
 
 for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
@@ -26,7 +27,6 @@ function gameHandler(e) {
     }
     if (ship.dataset.ship) {
         let position = ship.dataset.ship
-        ship.style.backgroundColor = 'green'
         let shipHit = ship.textContent
         coords[shipHit[0]][shipHit[2]] = 'x'
         ship.textContent = 'x'
@@ -48,6 +48,7 @@ function gameHandler(e) {
                     let firstrow = shipsLocation[i][0][0] - 1
                     let lastcell = +shipsLocation[i][shipsLocation[i].length - 1][2] + 1
                     let firstcell = shipsLocation[i][0][2] - 1
+                    t.rows[row].cells[cell].style.backgroundColor = 'rgb(190, 6, 6,0.3)'
                     if (position == '1') {
                         if (cell + 1 < 10) {
                             t.rows[row].cells[cell + 1].style.backgroundColor = 'lightblue'
