@@ -30,6 +30,7 @@ function gameHandler(e) {
         let shipHit = ship.textContent
         coords[shipHit[0]][shipHit[2]] = 'x'
         ship.textContent = 'x'
+        ship.className = 'kill'
         for (let i = 0; i < shipsLocation.length; i++) {
             for (let j = 0; j < shipsLocation[i].length; j++) {
                 let row = +shipsLocation[i][j][0]

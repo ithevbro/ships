@@ -21,7 +21,9 @@ function getBords(table1, table2) {
             let tr = document.createElement('tr')
             tableName.append(tr)
             for (let j = 1; j <= 10; j++) {
+                let div = document.createElement('div')
                 let td = document.createElement('td')
+                td.append(div)
                 tr.append(td)
             }
         }
@@ -160,6 +162,47 @@ function getBords(table1, table2) {
             }
         }
     }
+
+    table2.addEventListener('mouseover', (e) => {
+        let tr = e.target.closest('tr');
+        let td = e.target.closest('td');
+        if (tr) {
+            let tdIndex = Array.from(tr.children).indexOf(td);
+            let trIndex = Array.from(tr.parentNode.children).indexOf(tr);
+            // console.log(tdIndex);
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (i == trIndex || j == tdIndex) {
+                        // t1.rows[i].cells[j].style.border = '3px solid red';
+                        // table2.rows[i].cells[j].style.backgroundColor = 'rgba(143, 17, 17, 0.5)'
+                        table2.rows[i].cells[j].classList.add('targets')
+                        // if (t1.rows[i - 1]) {
+                        //     t1.rows[i - 1].cells[j].style.borderBottom = '3px solid red';
+                        // }
+                        // if (t1.rows[i].cells[j - 1]) {
+                        //     t1.rows[i].cells[j - 1].style.borderRight = '3px solid red';
+                        // }
+                    }
+
+                }
+            }
+            td.classList.add('target')
+        }
+    });
+
+    table2.addEventListener('mouseout', () => {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                // t1.rows[i].cells[j].style.border = '';
+                // table2.rows[i].cells[j].style.backgroundColor = ''
+                table2.rows[i].cells[j].classList.remove('targets')
+                table2.rows[i].cells[j].classList.remove('target')
+            }
+        }
+    });
+
+
+
 
     return {
         coords,

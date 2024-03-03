@@ -1,18 +1,15 @@
 table {
-    border: 1px solid black;
     border-collapse: collapse;
     font-size: 30px;
     text-align: center;
 }
 
-tr {
-    border: 1px solid black;
-}
-
 td {
-    border: 1px solid black;
+    border: 2px solid black;
     width: 40px;
     height: 40px;
+    position: relative;
+    color: transparent;
 }
 
 .player-1 {
@@ -32,13 +29,43 @@ body {
     align-items: center;
 }
 
-table td {
-    content-visibility: hidden;
+/* .targets::after {
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: rgba(143, 17, 17, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.hui {
-    width: 50px;
-    height: 50px;
-    background-color: bisque;
-    position: relative;
+.target::after {
+    position: absolute;
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: rgba(143, 17, 17, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+.kill::before,
+.kill::after {
+    position: absolute;
+    content: '';
+    width: 130%;
+    height: 5px;
+    background-color: black;
+    left: -15%;
+    border-radius: 15px;
+}
+
+.kill::before {
+    transform: rotate(45deg);
+}
+
+.kill::after {
+    transform: rotate(-45deg);
 }
