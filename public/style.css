@@ -49,3 +49,7 @@ body {
 .kill::after {
     transform: rotate(-45deg);
 }
+
+img{
+    width: 300px;
+}

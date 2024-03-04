@@ -17,12 +17,13 @@ function getBords(table1, table2) {
     let shipsLocation = []
 
     function createTable(tableName) {
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 0; i < 10; i++) {
             let tr = document.createElement('tr')
             tableName.append(tr)
-            for (let j = 1; j <= 10; j++) {
+            for (let j = 0; j < 10; j++) {
                 let td = document.createElement('td')
                 tr.append(td)
+                tableName.rows[i].cells[j].setAttribute('data-ship', `${i}-${j}`);
             }
         }
     }
@@ -65,8 +66,6 @@ function getBords(table1, table2) {
             for (let i = 0; i < size + 1; i++) {
                 if (i < size) {
                     table.rows[row + i].cells[cell].style.backgroundColor = 'green'
-                    table.rows[row + i].cells[cell].textContent = `${row + i}-${cell}`
-                    table.rows[row + i].cells[cell].setAttribute('data-ship', position);
                     coords[row + i][cell] = 1
                 }
                 else {
@@ -94,8 +93,6 @@ function getBords(table1, table2) {
             for (let i = 0; i < size + 1; i++) {
                 if (i < size) {
                     table.rows[row].cells[cell + i].style.backgroundColor = 'green'
-                    table.rows[row].cells[cell + i].textContent = `${row}-${cell + i}`
-                    table.rows[row].cells[cell + i].setAttribute('data-ship', position);
                     coords[row][cell + i] = 1
                 }
                 else {
@@ -133,7 +130,7 @@ function getBords(table1, table2) {
                     if (coords[j][i] < 1) {
                         memory.push(`${j}-${i}`)
                         if (memory.length == size) {
-                            shipsLocation.push(memory)
+                            shipsLocation.push({ position, memory })
                             return true
                         }
                     }
@@ -149,7 +146,7 @@ function getBords(table1, table2) {
                     if (coords[i][j] < 1) {
                         memory.push(`${i}-${j}`)
                         if (memory.length == size) {
-                            shipsLocation.push(memory)
+                            shipsLocation.push({ position, memory })
                             return true
                         }
                     }

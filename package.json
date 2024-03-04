@@ -1,0 +1,13 @@
+{
+  "name": "ships",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.mjs",
+  "scripts": {
+    "dev": "nodemon app.mjs",
+    "start": "node app.mjs"
+  },
+  "keywords": [],
+  "author": "vova",
+  "license": "vova"
+}
