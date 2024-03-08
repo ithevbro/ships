@@ -1,4 +1,6 @@
-function getBords(table1, table2) {
+import { createTable } from "./help.js"
+
+function getBords(table1) {
     'use strict'
     let table = table1
     let coords = [
@@ -16,20 +18,9 @@ function getBords(table1, table2) {
 
     let shipsLocation = []
 
-    function createTable(tableName) {
-        for (let i = 0; i < 10; i++) {
-            let tr = document.createElement('tr')
-            tableName.append(tr)
-            for (let j = 0; j < 10; j++) {
-                let td = document.createElement('td')
-                tr.append(td)
-                tableName.rows[i].cells[j].setAttribute('data-ship', `${i}-${j}`);
-            }
-        }
-    }
 
     createTable(table)
-    createTable(table2)
+    // createTable(table2)
 
     function getRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min) + min);

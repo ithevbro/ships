@@ -1,9 +1,8 @@
 import getBords from "./board.js";
+import { createTable } from "./help.js";
 
-let p1 = getBords(document.getElementById('table1-p1'), document.getElementById('table2-p1'))
-// let p2 = getBords(document.getElementById('table1-p2'), document.getElementById('table2-p2'))
-let t = document.getElementById('table2-p1')
-let t1 = document.getElementById('table1-p1')
+let p1 = getBords(document.getElementById('table1-p1'))
+let p2 = createTable(document.getElementById('table2-p1'))
 let coords = p1.coords
 let shipsLocation = p1.shipsLocation
 
@@ -33,7 +32,6 @@ function shipThink() {
         shipThink.play()
     }
 }
-
 
 function gameHandler(e) {
     let ship = e.target.closest('td')
