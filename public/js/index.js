@@ -174,6 +174,10 @@ play.addEventListener('click', (d) => {
 socket.on('ready', (d) => {
     coords = d.coords
     shipsLocation = d.shipsLocation
+    play.disabled = true
+    shuffle.disabled = true
+    play.style.opacity = '0.5'
+    shuffle.style.opacity = '0.5'
 })
 
 socket.on('end', (endData) => {
