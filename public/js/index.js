@@ -9,6 +9,8 @@ const table2 = document.getElementById('table2')
 const shuffle = document.getElementById('shuffle')
 const play = document.getElementById('play')
 const userscount = document.getElementById('userscount').children[0]
+const table2stop = document.getElementById('table2stop')
+let queue;
 
 table2.addEventListener('click', gameHandler)
 
@@ -49,20 +51,23 @@ function shipThink() {
 function gameHandler(e) {
     let ship = e.target.closest('td')
     let count = 0
-    if (!ship || ship.classList.contains('kill') || ship.classList.contains('empty')) {
+    if (!ship || ship.classList.contains('kill') || ship.classList.contains('empty') || queue % 2 !== 0) {
         return
     }
+
     let row = +ship.dataset.ship[0]
     let cell = +ship.dataset.ship[2]
     if (coords[row][cell] == 1) {
+        socket.emit('move', 'hitt');
         shotSound()
         coords[row][cell] = 'x'
         ship.className = 'kill'
+
     } else {
+        socket.emit('move', 'miss');
         ship.className = 'empty'
         ship.style.backgroundColor = 'lightblue'
     }
-
     for (let i = 0; i < shipsLocation.length; i++) {
         let ships = Object.values(shipsLocation[i])
         let position = ships[0]
@@ -136,6 +141,7 @@ function gameHandler(e) {
                     }
                 }
             }
+
             shipsLocation.splice(i, 1)
             shipThink()
         }
@@ -143,9 +149,7 @@ function gameHandler(e) {
     }
 
     if (shipsLocation.length == 0) {
-        setTimeout(() => {
-            alert('end')
-        })
+        socket.emit('end', 'gg')
     }
 }
 
@@ -153,11 +157,14 @@ socket.on("users", (users) => {
     userscount.textContent = users
 });
 
+
 socket.on('move', (msg) => {
-    // const item = document.createElement('li');
-    // item.textContent = msg;
-    // messages.appendChild(item);
-    // window.scrollTo(0, document.body.scrollHeight);
+    queue = msg
+    if (queue % 2 !== 0) {
+        table2stop.style.width = '100%'
+    } else {
+        table2stop.style.width = '0%'
+    }
 });
 
 play.addEventListener('click', (d) => {
@@ -165,6 +172,13 @@ play.addEventListener('click', (d) => {
 });
 
 socket.on('ready', (d) => {
-        coords = d.coords
-        shipsLocation = d.shipsLocation
+    coords = d.coords
+    shipsLocation = d.shipsLocation
+})
+
+socket.on('end', (endData) => {
+    if (endData) {
+        document.getElementById('table1stop').style.width = '100%'
+        table2stop.style.width = '100%'
+    }
 })

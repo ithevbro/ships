@@ -58,6 +58,7 @@ img {
 button {
     padding: 0;
     background-color: white;
+    border-radius: 15px;
 }
 
 .material-symbols-outlined {
@@ -84,4 +85,18 @@ button {
 
 #userscount span {
     color: green;
+}
+
+#table1-container,
+#table2-container {
+    position: relative;
+}
+
+#table2stop,
+#table1stop {
+    top: 0;
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
