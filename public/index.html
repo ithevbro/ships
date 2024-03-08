@@ -22,26 +22,36 @@
 
 <body>
     <div class="player-1">
-        <table id="table1-p1"></table>
+        <div id="userscount">Players online: <span>0</span></div>
+        <table id="table1"></table>
         <div class="btns">
-            <div id="random"><button><span class="material-symbols-outlined">
+            <div id="random"><button id="shuffle"><span class="material-symbols-outlined">
                         shuffle
                     </span></button>
                 <span>Shuffle</span>
             </div>
-            <div id="start"><button>
+            <div id="start"><button id="play">
                     <span class="material-symbols-outlined">
                         sports_esports
                     </span>
                 </button>
                 <span>Play</span>
             </div>
+            <div id="end"><button id="leave">
+                    <span class="material-symbols-outlined">
+                        logout
+                    </span>
+                </button>
+                <span>Leave</span>
+            </div>
         </div>
-        <table id="table2-p1"></table>
+        <table id="table2"></table>
+
     </div>
     <audio id="shot" src="./audio/mixkit-sea-mine-explosion-1184.wav"></audio>
     <audio id="shipThink" src="./audio/large-underwater-explosion-190270.mp3"></audio>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="./js/index.js"></script>
 </body>
 

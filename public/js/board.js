@@ -1,8 +1,7 @@
 import { createTable } from "./help.js"
 
-function getBords(table1) {
+function getBords(table) {
     'use strict'
-    let table = table1
     let coords = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -17,10 +16,7 @@ function getBords(table1) {
     ]
 
     let shipsLocation = []
-
-
     createTable(table)
-    // createTable(table2)
 
     function getRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
@@ -112,7 +108,6 @@ function getBords(table1) {
         }
     }
 
-    // console.log(coords);
     function checkAvailableCells(row, cell, position, size, id) {
         let memory = []
         if (position) {

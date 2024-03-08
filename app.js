@@ -29,14 +29,19 @@ io.on('connection', (socket) => {
 
     if (!roomId) {
         roomId = generateRoomId();
-        rooms[roomId] = { players: [], readyCount: 0 };
+        rooms[roomId] = { players: [], readyCount: 0, data: [] };
     }
 
     rooms[roomId].players.push(socket.id);
     socket.join(roomId);
 
-    socket.on('ready', () => {
+    socket.on('ready', (data) => {
+        // rooms[roomId].data.push(data)
         rooms[roomId].readyCount++;
+        socket.to(roomId).emit('ready', data)
+        // if (rooms[roomId].readyCount == 2) {
+        //     io.to(roomId).emit('ready', rooms[roomId].data);
+        // }
     });
 
     socket.on('move', (move) => {
