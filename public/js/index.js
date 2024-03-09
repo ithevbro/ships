@@ -10,6 +10,7 @@ const shuffle = document.getElementById('shuffle')
 const play = document.getElementById('play')
 const userscount = document.getElementById('userscount').children[0]
 const table2stop = document.getElementById('table2stop')
+const leave = document.getElementById('leave')
 let queue;
 
 table2.addEventListener('click', gameHandler)
@@ -66,7 +67,6 @@ function gameHandler(e) {
     } else {
         socket.emit('move', 'miss');
         ship.className = 'empty'
-        ship.style.backgroundColor = 'lightblue'
     }
     for (let i = 0; i < shipsLocation.length; i++) {
         let ships = Object.values(shipsLocation[i])
@@ -91,53 +91,53 @@ function gameHandler(e) {
                 table2.rows[row].cells[cell].style.backgroundColor = 'rgb(190, 6, 6,0.3)'
                 if (position) {
                     if (cell + 1 < 10) {
-                        table2.rows[row].cells[cell + 1].style.backgroundColor = 'lightblue'
+                        table2.rows[row].cells[cell + 1].className = 'empty'
                     }
                     if (cell - 1 >= 0) {
-                        table2.rows[row].cells[cell - 1].style.backgroundColor = 'lightblue'
+                        table2.rows[row].cells[cell - 1].className = 'empty'
                     }
                     if (lastrow < 10) {
-                        table2.rows[lastrow].cells[cell].style.backgroundColor = 'lightblue'
+                        table2.rows[lastrow].cells[cell].className = 'empty'
                     }
                     if (firstrow >= 0) {
-                        table2.rows[firstrow].cells[cell].style.backgroundColor = 'lightblue'
+                        table2.rows[firstrow].cells[cell].className = 'empty'
                     }
                     if (cell - 1 >= 0 && lastrow < 10) {
-                        table2.rows[lastrow].cells[cell - 1].style.backgroundColor = 'lightblue'
+                        table2.rows[lastrow].cells[cell - 1].className = 'empty'
                     }
                     if (cell + 1 < 10 && lastrow < 10) {
-                        table2.rows[lastrow].cells[cell + 1].style.backgroundColor = 'lightblue'
+                        table2.rows[lastrow].cells[cell + 1].className = 'empty'
                     }
                     if (cell - 1 >= 0 && firstrow >= 0) {
-                        table2.rows[firstrow].cells[cell - 1].style.backgroundColor = 'lightblue'
+                        table2.rows[firstrow].cells[cell - 1].className = 'empty'
                     }
                     if (cell + 1 < 10 && firstrow >= 0) {
-                        table2.rows[firstrow].cells[cell + 1].style.backgroundColor = 'lightblue'
+                        table2.rows[firstrow].cells[cell + 1].className = 'empty'
                     }
                 } else {
                     if (row + 1 < 10) {
-                        table2.rows[row + 1].cells[cell].style.backgroundColor = 'lightblue'
+                        table2.rows[row + 1].cells[cell].className = 'empty'
                     }
                     if (row - 1 >= 0) {
-                        table2.rows[row - 1].cells[cell].style.backgroundColor = 'lightblue'
+                        table2.rows[row - 1].cells[cell].className = 'empty'
                     }
                     if (lastcell < 10) {
-                        table2.rows[row].cells[lastcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row].cells[lastcell].className = 'empty'
                     }
                     if (firstcell >= 0) {
-                        table2.rows[row].cells[firstcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row].cells[firstcell].className = 'empty'
                     }
                     if (row - 1 >= 0 && lastcell < 10) {
-                        table2.rows[row - 1].cells[lastcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row - 1].cells[lastcell].className = 'empty'
                     }
                     if (row + 1 < 10 && lastcell < 10) {
-                        table2.rows[row + 1].cells[lastcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row + 1].cells[lastcell].className = 'empty'
                     }
                     if (row - 1 >= 0 && firstcell >= 0) {
-                        table2.rows[row - 1].cells[firstcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row - 1].cells[firstcell].className = 'empty'
                     }
                     if (row + 1 < 10 && firstcell >= 0) {
-                        table2.rows[row + 1].cells[firstcell].style.backgroundColor = 'lightblue'
+                        table2.rows[row + 1].cells[firstcell].className = 'empty'
                     }
                 }
             }
@@ -169,15 +169,24 @@ socket.on('move', (msg) => {
 
 play.addEventListener('click', (d) => {
     socket.emit('ready', player1Data);
+    play.disabled = true
+    play.classList.add('opac')
+    shuffle.disabled = true
+    shuffle.classList.add('opac')
+    leave.disabled = false
+    leave.classList.remove('opac')
 });
 
 socket.on('ready', (d) => {
+    if (d == 1) {
+        table1stop.style.width = '100%'
+        document.getElementById('waiting').style.display = 'inline'
+    } else {
+        table1stop.style.width = '0%'
+        document.getElementById('waiting').style.display = 'none'
+    }
     coords = d.coords
     shipsLocation = d.shipsLocation
-    play.disabled = true
-    shuffle.disabled = true
-    play.style.opacity = '0.5'
-    shuffle.style.opacity = '0.5'
 })
 
 socket.on('end', (endData) => {

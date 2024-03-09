@@ -18,26 +18,25 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    io.emit('users', io.engine.clientsCount);
     let roomId;
-    for (const id in rooms) {
-        if (rooms[id].players.length < 2 && rooms[id].readyCount !== 2) {
-            roomId = id;
-            break;
-        }
-    }
-    if (!roomId) {
-        roomId = generateRoomId();
-        rooms[roomId] = { players: [], readyCount: 0, data: [], idData: [] };
-    }
-
-    rooms[roomId].players.push(socket.id);
-    socket.join(roomId);
-
+    io.emit('users', io.engine.clientsCount);
     socket.on('ready', (data) => {
+        for (const id in rooms) {
+            if (rooms[id].players.length < 2 && rooms[id].readyCount !== 2) {
+                roomId = id;
+                break;
+            }
+        }
+        if (!roomId) {
+            roomId = generateRoomId();
+            rooms[roomId] = { players: [], readyCount: 0, data: [], idData: [] };
+        }
+        rooms[roomId].players.push(socket.id);
+        socket.join(roomId);
         rooms[roomId].data.push(data)
         rooms[roomId].idData.push(socket.id)
         rooms[roomId].readyCount++;
+        io.emit('ready', rooms[roomId].readyCount);
         if (rooms[roomId].readyCount == 2) {
             let r = Math.floor(Math.random() * 2)
             io.to(rooms[roomId].players[r]).emit('move', 0);
@@ -75,15 +74,18 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         io.emit('users', io.engine.clientsCount);
-        const index = rooms[roomId].players.indexOf(socket.id);
-        if (index !== -1) {
-            rooms[roomId].players.splice(index, 1);
-            if (rooms[roomId].players.length === 0) {
-                delete rooms[roomId];
-            } else {
-                io.to(roomId).emit('opponentLeft');
+        if (rooms[roomId]) {
+            const index = rooms[roomId].players.indexOf(socket.id);
+            if (index !== -1) {
+                rooms[roomId].players.splice(index, 1);
+                if (rooms[roomId].players.length === 0) {
+                    delete rooms[roomId];
+                } else {
+                    io.to(roomId).emit('opponentLeft');
+                }
             }
         }
+
         console.log(rooms);
     });
     console.log(rooms);
