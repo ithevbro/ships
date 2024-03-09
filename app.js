@@ -76,7 +76,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('shot', (hittData) => {
-        console.log(hittData);
         socket.to(roomId).emit('shot', hittData)
     })
 
