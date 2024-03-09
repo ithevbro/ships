@@ -5,6 +5,7 @@ createTable(document.getElementById('table2'))
 let player1Data = getBords(document.getElementById('table1'))
 let coords = player1Data.coords
 let shipsLocation = player1Data.shipsLocation
+const table1 = document.getElementById('table1')
 const table2 = document.getElementById('table2')
 const shuffle = document.getElementById('shuffle')
 const play = document.getElementById('play')
@@ -12,6 +13,7 @@ const userscount = document.getElementById('userscount').children[0]
 const table2stop = document.getElementById('table2stop')
 const table1stop = document.getElementById('table1stop')
 const leave = document.getElementById('leave')
+const fight = document.getElementById('fight')
 let gg = false
 let queue;
 
@@ -39,6 +41,7 @@ function shotSound() {
         shot.play()
     }
 }
+
 function shipThink() {
     let shipThink = document.getElementById('shipThink')
     if (shipThink.paused) {
@@ -63,12 +66,14 @@ function gameHandler(e) {
     let cell = +ship.dataset.ship[2]
     if (coords[row][cell] == 1) {
         socket.emit('move', 'hitt');
+        socket.emit('shot', ship.dataset.ship);
         shotSound()
         coords[row][cell] = 'x'
         ship.className = 'kill'
 
     } else {
         socket.emit('move', 'miss');
+        socket.emit('shot', ship.dataset.ship);
         ship.className = 'empty'
     }
     for (let i = 0; i < shipsLocation.length; i++) {
@@ -199,6 +204,7 @@ socket.on('ready', (d) => {
             table1stop.style.width = '0%'
             document.getElementById('waiting').style.display = 'none'
         }
+        document.getElementById('fight').play()
     }
     coords = d.coords
     shipsLocation = d.shipsLocation
@@ -227,3 +233,20 @@ socket.on('end', (endData) => {
         document.getElementById('gamestate').style.display = 'inline'
     }
 })
+
+socket.on('shot', hittData => {
+    let row = hittData[0]
+    let cell = hittData[2]
+    if (player1Data.coords[row][cell] === 1) {
+        table1.rows[row].cells[cell].className = 'kill'
+    } else {
+        table1.rows[row].cells[cell].className = 'empty'
+    }
+
+})
+
+function drawKilled(xy) {
+    if (condition) {
+
+    }
+}

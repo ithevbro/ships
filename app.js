@@ -75,6 +75,10 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('shot', (hittData) => {
+        socket.to(roomId).emit('shot', hittData)
+    })
+
     socket.on('disconnect', () => {
         io.emit('users', io.engine.clientsCount);
         io.to(roomId).emit('end', 'left')
