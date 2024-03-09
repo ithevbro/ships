@@ -1,4 +1,3 @@
-const e = require('express');
 const express = require('express');
 const { createServer } = require('node:http');
 const { join } = require('node:path');
@@ -22,7 +21,7 @@ io.on('connection', (socket) => {
     io.emit('users', io.engine.clientsCount);
     let roomId;
     for (const id in rooms) {
-        if (rooms[id].players.length < 2 && rooms[id].readyCount < 3) {
+        if (rooms[id].players.length < 2 && rooms[id].readyCount !== 2) {
             roomId = id;
             break;
         }
@@ -85,9 +84,9 @@ io.on('connection', (socket) => {
                 io.to(roomId).emit('opponentLeft');
             }
         }
-        // console.log(rooms);
+        console.log(rooms);
     });
-    // console.log(rooms);
+    console.log(rooms);
 });
 
 server.listen(3000, () => {
