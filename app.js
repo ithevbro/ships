@@ -2,7 +2,6 @@ const express = require('express');
 const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { Server } = require('socket.io');
-
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -54,7 +53,6 @@ io.on('connection', (socket) => {
                 io.to(rooms[roomId].players[1]).emit('ready', rooms[roomId].data[1]);
             }
         }
-        console.log(rooms);
     });
 
     socket.on('move', (move) => {
@@ -69,9 +67,11 @@ io.on('connection', (socket) => {
 
     socket.on('end', (endData) => {
         if (endData === 'gg') {
-            io.to(roomId).emit('end', 'gg')
+            socket.to(roomId).emit('end', 'gg')
+        } else if (endData === 'win') {
+            socket.to(roomId).emit('end', 'win')
         } else {
-            io.to(roomId).emit('end', 'left')
+            socket.to(roomId).emit('end', 'left')
         }
     })
 
@@ -84,16 +84,12 @@ io.on('connection', (socket) => {
                 rooms[roomId].players.splice(index, 1);
                 if (rooms[roomId].players.length <= 1) {
                     delete rooms[roomId];
-                    console.log(rooms);
                 } else {
                     io.to(roomId).emit('opponentLeft');
                 }
             }
         }
-
     });
 });
 
-server.listen(3000, () => {
-    console.log('server running at http://localhost:3000');
-});
+server.listen(3000);

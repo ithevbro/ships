@@ -10,7 +10,9 @@ const shuffle = document.getElementById('shuffle')
 const play = document.getElementById('play')
 const userscount = document.getElementById('userscount').children[0]
 const table2stop = document.getElementById('table2stop')
+const table1stop = document.getElementById('table1stop')
 const leave = document.getElementById('leave')
+let gg = false
 let queue;
 
 table2.addEventListener('click', gameHandler)
@@ -53,10 +55,10 @@ function shipThink() {
 function gameHandler(e) {
     let ship = e.target.closest('td')
     let count = 0
-    if (!ship || ship.classList.contains('kill') || ship.classList.contains('empty') || queue % 2 !== 0) {
+    if (!ship || ship.classList.contains('kill') || ship.classList.contains('empty') || queue % 2 !== 0 || gg) {
         return
     }
-
+    table1stop.style.width = '100%'
     let row = +ship.dataset.ship[0]
     let cell = +ship.dataset.ship[2]
     if (coords[row][cell] == 1) {
@@ -163,8 +165,14 @@ socket.on('move', (msg) => {
     queue = msg
     if (queue % 2 !== 0) {
         table2stop.style.width = '100%'
+        table1stop.style.width = '0%'
+        table2.style.boxShadow = ''
+        table1.style.boxShadow = '0 0 20px green'
     } else {
         table2stop.style.width = '0%'
+        table1stop.style.width = '100%'
+        table2.style.boxShadow = '0 0 20px green'
+        table1.style.boxShadow = ''
     }
 });
 
@@ -183,20 +191,36 @@ socket.on('ready', (d) => {
         table1stop.style.width = '100%'
         document.getElementById('waiting').style.display = 'inline'
     } else {
-        table1stop.style.width = '0%'
-        document.getElementById('waiting').style.display = 'none'
+        if (queue % 2 == 0) {
+            document.getElementById('waiting').style.display = 'none'
+            table1stop.style.width = '100%'
+        }
+        else {
+            table1stop.style.width = '0%'
+            document.getElementById('waiting').style.display = 'none'
+        }
     }
     coords = d.coords
     shipsLocation = d.shipsLocation
 })
 
 socket.on('end', (endData) => {
+    gg = true
     if (endData === 'gg') {
         document.getElementById('table1stop').style.width = '100%'
         table2stop.style.width = '100%'
-        document.getElementById('gamestate').textContent = 'gg'
+        document.getElementById('gamestate').style.color = 'red'
+        document.getElementById('gamestate').textContent = 'You lost'
+        document.getElementById('gamestate').style.display = 'inline'
+        socket.emit('end', 'win')
+    } else if (endData === 'win') {
+        document.getElementById('table1stop').style.width = '100%'
+        table2stop.style.width = '100%'
+        document.getElementById('gamestate').style.color = 'green'
+        document.getElementById('gamestate').textContent = 'You Win'
         document.getElementById('gamestate').style.display = 'inline'
     } else {
+        console.log(endData);
         document.getElementById('table1stop').style.width = '100%'
         table2stop.style.width = '100%'
         document.getElementById('gamestate').textContent = 'Opponent left'
