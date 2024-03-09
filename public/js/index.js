@@ -237,16 +237,88 @@ socket.on('end', (endData) => {
 socket.on('shot', hittData => {
     let row = hittData[0]
     let cell = hittData[2]
+    let count = 0
     if (player1Data.coords[row][cell] === 1) {
         table1.rows[row].cells[cell].className = 'kill'
+        player1Data.coords[row][cell] = 'x'
     } else {
         table1.rows[row].cells[cell].className = 'empty'
     }
-
-})
-
-function drawKilled(xy) {
-    if (condition) {
-
+    for (let i = 0; i < player1Data.shipsLocation.length; i++) {
+        let ships = Object.values(player1Data.shipsLocation[i])
+        let position = ships[0]
+        let ship = ships[1]
+        let shipLength = ship.length
+        for (let j = 0; j < ship.length; j++) {
+            let row = +ship[j][0]
+            let cell = +ship[j][2]
+            if (player1Data.coords[row][cell] === 'x') {
+                ++count
+            }
+        }
+        if (count == shipLength) {
+            for (let z = 0; z < ship.length; z++) {
+                let row = +ship[z][0]
+                let cell = +ship[z][2]
+                let lastrow = +ship[ship.length - 1][0] + 1
+                let firstrow = +ship[0][0] - 1
+                let lastcell = +ship[ship.length - 1][2] + 1
+                let firstcell = +ship[0][2] - 1
+                table1.rows[row].cells[cell].style.backgroundColor = 'rgba(0, 128, 0, 0.5)'
+                if (position) {
+                    if (cell + 1 < 10) {
+                        table1.rows[row].cells[cell + 1].className = 'empty'
+                    }
+                    if (cell - 1 >= 0) {
+                        table1.rows[row].cells[cell - 1].className = 'empty'
+                    }
+                    if (lastrow < 10) {
+                        table1.rows[lastrow].cells[cell].className = 'empty'
+                    }
+                    if (firstrow >= 0) {
+                        table1.rows[firstrow].cells[cell].className = 'empty'
+                    }
+                    if (cell - 1 >= 0 && lastrow < 10) {
+                        table1.rows[lastrow].cells[cell - 1].className = 'empty'
+                    }
+                    if (cell + 1 < 10 && lastrow < 10) {
+                        table1.rows[lastrow].cells[cell + 1].className = 'empty'
+                    }
+                    if (cell - 1 >= 0 && firstrow >= 0) {
+                        table1.rows[firstrow].cells[cell - 1].className = 'empty'
+                    }
+                    if (cell + 1 < 10 && firstrow >= 0) {
+                        table1.rows[firstrow].cells[cell + 1].className = 'empty'
+                    }
+                } else {
+                    if (row + 1 < 10) {
+                        table1.rows[row + 1].cells[cell].className = 'empty'
+                    }
+                    if (row - 1 >= 0) {
+                        table1.rows[row - 1].cells[cell].className = 'empty'
+                    }
+                    if (lastcell < 10) {
+                        table1.rows[row].cells[lastcell].className = 'empty'
+                    }
+                    if (firstcell >= 0) {
+                        table1.rows[row].cells[firstcell].className = 'empty'
+                    }
+                    if (row - 1 >= 0 && lastcell < 10) {
+                        table1.rows[row - 1].cells[lastcell].className = 'empty'
+                    }
+                    if (row + 1 < 10 && lastcell < 10) {
+                        table1.rows[row + 1].cells[lastcell].className = 'empty'
+                    }
+                    if (row - 1 >= 0 && firstcell >= 0) {
+                        table1.rows[row - 1].cells[firstcell].className = 'empty'
+                    }
+                    if (row + 1 < 10 && firstcell >= 0) {
+                        table1.rows[row + 1].cells[firstcell].className = 'empty'
+                    }
+                }
+            }
+            shipsLocation.splice(i, 1)
+        }
+        count = 0
     }
-}
+})
