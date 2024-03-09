@@ -80,6 +80,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
+        console.log(1);
         io.emit('users', io.engine.clientsCount);
         io.to(roomId).emit('end', 'left')
         if (rooms[roomId]) {

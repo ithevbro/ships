@@ -234,7 +234,7 @@ socket.on('end', (endData) => {
     }
 })
 
-socket.on('shot', hittData => {
+socket.on('shot', function (hittData) {
     let row = hittData[0]
     let cell = hittData[2]
     let count = 0
