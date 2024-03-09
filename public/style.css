@@ -122,6 +122,12 @@ button {
     animation: glow 2s ease-in-out infinite alternate;
 }
 
+#gamestate {
+    display: none;
+    color: white;
+    font-size: 40px;
+}
+
 @keyframes glow {
     0% {
         color: white;

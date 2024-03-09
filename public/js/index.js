@@ -16,6 +16,7 @@ let queue;
 table2.addEventListener('click', gameHandler)
 
 leave.addEventListener('click', () => {
+    socket.emit('end', 'left')
     window.location.href = '/';
 });
 
@@ -190,8 +191,15 @@ socket.on('ready', (d) => {
 })
 
 socket.on('end', (endData) => {
-    if (endData) {
+    if (endData === 'gg') {
         document.getElementById('table1stop').style.width = '100%'
         table2stop.style.width = '100%'
+        document.getElementById('gamestate').textContent = 'gg'
+        document.getElementById('gamestate').style.display = 'inline'
+    } else {
+        document.getElementById('table1stop').style.width = '100%'
+        table2stop.style.width = '100%'
+        document.getElementById('gamestate').textContent = 'Opponent left'
+        document.getElementById('gamestate').style.display = 'inline'
     }
 })

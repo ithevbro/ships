@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         rooms[roomId].data.push(data)
         rooms[roomId].idData.push(socket.id)
         rooms[roomId].readyCount++;
-        io.emit('ready', rooms[roomId].readyCount);
+        socket.emit('ready', rooms[roomId].readyCount);
         if (rooms[roomId].readyCount == 2) {
             let r = Math.floor(Math.random() * 2)
             io.to(rooms[roomId].players[r]).emit('move', 0);
@@ -54,6 +54,7 @@ io.on('connection', (socket) => {
                 io.to(rooms[roomId].players[1]).emit('ready', rooms[roomId].data[1]);
             }
         }
+        console.log(rooms);
     });
 
     socket.on('move', (move) => {
@@ -67,28 +68,30 @@ io.on('connection', (socket) => {
     });
 
     socket.on('end', (endData) => {
-        if (endData) {
+        if (endData === 'gg') {
             io.to(roomId).emit('end', 'gg')
+        } else {
+            io.to(roomId).emit('end', 'left')
         }
     })
 
     socket.on('disconnect', () => {
         io.emit('users', io.engine.clientsCount);
+        io.to(roomId).emit('end', 'left')
         if (rooms[roomId]) {
             const index = rooms[roomId].players.indexOf(socket.id);
             if (index !== -1) {
                 rooms[roomId].players.splice(index, 1);
-                if (rooms[roomId].players.length === 0) {
+                if (rooms[roomId].players.length <= 1) {
                     delete rooms[roomId];
+                    console.log(rooms);
                 } else {
                     io.to(roomId).emit('opponentLeft');
                 }
             }
         }
 
-        console.log(rooms);
     });
-    console.log(rooms);
 });
 
 server.listen(3000, () => {
