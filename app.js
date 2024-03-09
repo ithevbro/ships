@@ -76,11 +76,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('shot', (hittData) => {
+        console.log(hittData);
         socket.to(roomId).emit('shot', hittData)
     })
 
     socket.on('disconnect', () => {
-        console.log(1);
         io.emit('users', io.engine.clientsCount);
         io.to(roomId).emit('end', 'left')
         if (rooms[roomId]) {

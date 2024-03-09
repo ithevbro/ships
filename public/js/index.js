@@ -317,7 +317,7 @@ socket.on('shot', function (hittData) {
                     }
                 }
             }
-            shipsLocation.splice(i, 1)
+            player1Data.shipsLocation.splice(i, 1)
         }
         count = 0
     }
