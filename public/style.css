@@ -12,14 +12,9 @@ td {
     color: transparent;
 }
 
-.player-1 {
+.tables {
     display: flex;
-    gap: 15px;
-}
-
-.player-2 {
-    display: flex;
-    gap: 15px;
+    gap: 25px;
 }
 
 body {
@@ -52,18 +47,14 @@ body {
     transform: rotate(-45deg);
 }
 
-img {
-    width: 300px;
-}
-
 button {
     padding: 0;
-    background-color: white;
+    background-color: whitesmoke;
     border-radius: 15px;
 }
 
 .material-symbols-outlined {
-    font-size: 70px;
+    font-size: 60px;
     color: green;
 }
 
@@ -79,6 +70,18 @@ button {
 }
 
 .btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btns2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.player-1 {
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -129,6 +132,10 @@ button {
     font-size: 40px;
 }
 
+#userscount {
+    align-self: flex-end;
+}
+
 @keyframes glow {
     0% {
         color: white;
@@ -140,5 +147,43 @@ button {
 
     100% {
         color: white;
+    }
+}
+
+@media (max-width: 900px) {
+    .material-symbols-outlined {
+        font-size: 50px;
+    }
+
+    #random,
+    #start,
+    #end {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 899px) {
+    td {
+        width: 30px;
+        height: 30px;
+    }
+    .player-1{
+        gap: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+    .tables {
+        flex-direction: column;
+    }
+
+    .material-symbols-outlined {
+        font-size: 40px;
+    }
+
+    #random,
+    #start,
+    #end {
+        font-size: 16px;
     }
 }
