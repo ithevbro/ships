@@ -119,6 +119,23 @@ button {
     background-color: lightblue;
 }
 
+.emptyhit {
+    position: relative;
+    background-color: lightblue;
+}
+
+.emptyhit::after {
+    content: '\2022';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: gray;
+    font-size: 50px;
+}
+
+
+
 #waiting {
     display: none;
     color: white;
@@ -167,7 +184,8 @@ button {
         width: 30px;
         height: 30px;
     }
-    .player-1{
+
+    .player-1 {
         gap: 10px;
     }
 }
@@ -175,15 +193,10 @@ button {
 @media (max-width: 700px) {
     .tables {
         flex-direction: column;
+        gap: 10px;
     }
 
     .material-symbols-outlined {
         font-size: 40px;
-    }
-
-    #random,
-    #start,
-    #end {
-        font-size: 16px;
     }
 }
